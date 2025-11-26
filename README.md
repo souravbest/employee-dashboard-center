@@ -1,3 +1,5 @@
+# Steps to run the project 
+
 # EmployeeDashboardCenter
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.0.
@@ -57,3 +59,31 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+## Assumptions made 
+
+1. The user interacting with the application has basic knowledge of adding and managing employee records.
+2. Each employee record must contain the following mandatory fields:
+        a> Name
+        b> Email
+        c> Department
+        d> Date of Joining
+
+
+3. The application runs in a modern web browser that supports Angular features (e.g., Chrome, Edge, Firefox).
+4. Data persistence in this version is handled in Local memory (not stored in a database), and data will reset on     page refresh.
+
+5. No authentication or login is required for this basic version of the application.
+6. User input is assumed to be genuine and not malicious; advanced validation and security checks are not included at this stage.
+
+
+## List of bonus features (if implemented) 
+
+1.  Export employee list as CSV. >> Implemented
+2. Follow best practices for folder structure and clean code.  >> Implemented
+3. Use Git for version control (commit regularly).  >> Implemented
+4.  UI/UX (responsiveness, user experience, attention to detail).  >> Implemented
+5. Problem Solving (handling requirements like persistence, search, validations).  >> Implemented
+6. Use Angular (v10+) and TypeScript.  >> Implemented
+
