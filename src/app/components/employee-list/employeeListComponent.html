@@ -1,0 +1,97 @@
+<!-- <div class="toolbar">
+  <button (click)="onAdd()">Add Employee</button>
+
+  <input
+    placeholder="Search name or email"
+    [(ngModel)]="searchText"
+    (ngModelChange)="onSearchChange()"
+  />
+
+  <select [(ngModel)]="departmentFilter" (change)="onDepartmentChange()">
+    <option *ngFor="let d of departments" [value]="d">
+      {{ d }}
+    </option>
+  </select>
+
+  <button (click)="toggleSort('name')">
+    Sort Name
+  </button>
+
+  <button (click)="toggleSort('doj')">
+    Sort Date of Joining
+  </button>
+
+  <button (click)="exportCSV()">
+    Export CSV
+  </button>
+</div> -->
+
+<div class="toolbar">
+   <button (click)="onAdd()">Add Employee</button>
+
+  <input
+    placeholder="Search name or email"
+    [(ngModel)]="searchText"
+    (ngModelChange)="onSearchChange()"
+  />
+  <select [(ngModel)]="departmentFilter" (change)="onDepartmentChange()">
+    <option *ngFor="let d of departments" [value]="d">
+      {{ d }}
+    </option>
+  </select>
+
+  <button (click)="toggleSort('name')">
+    Sort Name
+  </button>
+
+  <button (click)="toggleSort('doj')">
+    Sort Date of Joining
+  </button>
+
+  <button (click)="exportCSV()">
+    Export CSV
+  </button>
+</div>
+<div *ngIf="statusMessage" 
+     [ngClass]="{'status-success': statusType==='success', 'status-error': statusType==='error'}" 
+     class="status-message">
+  {{ statusMessage }}
+</div>
+<!-- Form Section -->
+<div *ngIf="showForm">
+  <app-employee-form
+    [employee]="editing"
+    (save)="onSave($event)"
+    (cancel)="onCancel()"
+  ></app-employee-form>
+</div>
+
+<!-- Table Section -->
+<table *ngIf="!showForm">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Department</th>
+      <th>Date Of Joining</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let e of filtered">
+      <td>{{ e.name }}</td>
+      <td>{{ e.email }}</td>
+      <td>{{ e.department }}</td>
+      <td>{{ e.dateOfJoining }}</td>
+      <td class="tdbutton">
+        <button (click)="onEdit(e)">Edit</button>
+        <button (click)="onDelete(e.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="filtered.length === 0 && !showForm">
+  No employees found.
+</div>
