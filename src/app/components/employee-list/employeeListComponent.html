@@ -52,16 +52,16 @@
     Export CSV
   </button>
 </div>
-<div *ngIf="statusMessage" 
+<div *ngIf="statusShown" 
      [ngClass]="{'status-success': statusType==='success', 'status-error': statusType==='error'}" 
      class="status-message">
   {{ statusMessage }}
 </div>
-<!-- Form Section -->
+
 <div *ngIf="showForm">
   <app-employee-form
     [employee]="editing"
-    (save)="onSave($event)"
+    (save)="onSave($event,idd)"
     (cancel)="onCancel()"
   ></app-employee-form>
 </div>
@@ -85,7 +85,7 @@
       <td>{{ e.department }}</td>
       <td>{{ e.dateOfJoining }}</td>
       <td class="tdbutton">
-        <button (click)="onEdit(e)">Edit</button>
+        <button (click)="onEdit(e,e.id)">Edit</button>
         <button (click)="onDelete(e.id)">Delete</button>
       </td>
     </tr>

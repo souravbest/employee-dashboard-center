@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit,NgZone  } from '@angular/core';
+import { Component, OnDestroy, OnInit,NgZone,ChangeDetectorRef   } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Employee } from '../../models/employeeModel';
 import { EmployeeService } from '../../services/employeeService';
@@ -39,9 +39,10 @@ statusShown = false;
 departments = ['All','HR', 'Engineering', 'Sales', 'Marketing', 'Finance', 'Operations'];
 
 
-constructor(private svc: EmployeeService,private ngZone: NgZone) {}
+constructor(private svc: EmployeeService,private ngZone: NgZone,private cd: ChangeDetectorRef) {}
 
 statusMessage: string = '';
+idd:string = "";
 
 statusType: 'success' | 'error' | '' = '';
 
@@ -50,13 +51,17 @@ statusType: 'success' | 'error' | '' = '';
 showStatus(message: string, type: 'success' | 'error') {
   this.statusMessage = message;
   this.statusType = type;
+ this.statusShown = true;
+ this.cd.detectChanges();  // Just refreshing the UI
 
   
 
   setTimeout(() => {
     this.statusMessage = '';
     this.statusType = '';
-    this.statusShown = true;
+    this.statusShown = false;
+    this.cd.detectChanges();
+ 
  
   }, 3000);
 }
@@ -100,32 +105,62 @@ this.sortList();
 onAdd() {
 this.editing = null;
 this.showForm = true;
+
 }
 
 
-onEdit(emp: Employee) {
+onEdit(emp: Employee , id:string) {
 this.editing = { ...emp };
 this.showForm = true;
+emp.id = id;
+this.idd = id;
 this.showStatus('You can edit now !', 'success');
 }
 
 
+// onDelete(id: string) {
+// if (!confirm('Are you sure you want to delete this employee?')) return;
+// this.svc.delete(id);
+//  this.showStatus('Employee deleted!', 'error');
+// }
 onDelete(id: string) {
-if (!confirm('Are you sure you want to delete this employee?')) return;
-this.svc.delete(id);
- this.showStatus('Employee deleted!', 'error');
+  if (!confirm('Are you sure you want to delete this employee?')) return;
+
+  this.employees = this.employees.filter(e => e.id !== id);
+  this.filtered = [...this.employees]; 
+
+  this.showStatus('Employee deleted!', 'error');
 }
 
+// onSave(emp: Employee) {
+// if (this.editing) this.svc.update(emp);
+// else this.svc.add(emp);
+// this.showForm = false;
+// this.showStatus('Employee saved successfully!', 'success');
+// }
+onSave(emp: Employee,idd: string) {
+  if (this.editing) {
+    this.employees = this.employees.map(e =>
+      e.id === idd ? { ...emp } : e   
+    );
+    this.filtered = [...this.employees]; 
+  } else {
+    emp.id = crypto.randomUUID();
+    this.employees.push({ ...emp });    
+  }
 
-onSave(emp: Employee) {
-if (this.editing) this.svc.update(emp);
-else this.svc.add(emp);
-this.showForm = false;
-this.showStatus('Employee saved successfully!', 'success');
+  this.filtered = [...this.employees];  
+  this.showForm = false;
+  this.editing = null;
+  this.showStatus('Employee saved successfully!', 'success');
 }
 
-
-onCancel() { this.showForm = false; }
+onCancel() {
+  this.showForm = false;
+  this.editing = null;
+  this.statusMessage = '';
+  this.statusType = '';
+}
 
 
 onSearchChange() { this.applyAllFilters(); }
